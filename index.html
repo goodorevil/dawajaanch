@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DawaJaanch - Look-Alike Sound-Alike Medicine Safety Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        heroBlue: '#eef6ff',
+                        heroBlueDark: '#dbeafe',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+        }
+
+        .hero-banner-bg {
+            background: linear-gradient(135deg, #eef6ff 0%, #f4f9ff 50%, #e0f2fe 100%);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-pill-container {
+            background: #ffffff;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-pill-container:focus-within {
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.15);
+        }
+
+        .action-box {
+            background: #f0f7ff;
+            border: 1px solid #c7d2fe;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-box:hover {
+            background: #e0e7ff;
+            border-color: #818cf8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -3px rgba(99, 102, 241, 0.12);
+        }
+
+        .tall-man-letter {
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #b45309;
+            background-color: #fef3c7;
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid #fde68a;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <div>
+        <!-- TOP UTILITY BAR -->
+        <div class="bg-slate-900 text-slate-200 text-xs py-2 px-4 flex justify-between items-center border-b border-slate-800">
+            <div class="flex items-center gap-4">
+                    <span class="flex items-center gap-1.5 text-emerald-400 font-semibold" data-i18n="top_portal">
+                        <i class="fa-solid fa-shield-halved"></i> AI-assisted medicine information
+                </span>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- LANGUAGE SWITCH BUTTON -->
+                <button onclick="toggleLanguage()" class="bg-teal-600 hover:bg-teal-500 text-white font-extrabold px-2.5 py-0.5 rounded text-xs transition flex items-center gap-1">
+                    <i class="fa-solid fa-globe"></i> <span id="lang-btn-text">हिंदी (Hindi)</span>
+                </button>
+                <button id="senior-mode-button" aria-pressed="false" onclick="toggleSeniorMode()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold px-2.5 py-0.5 rounded text-xs transition">
+                    <i class="fa-solid fa-glasses mr-1"></i> <span data-i18n="senior_mode">Senior Mode</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN BRAND HEADER -->
+        <header class="bg-white sticky top-0 z-40 border-b border-slate-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="relative w-11 h-11 bg-gradient-to-br from-teal-600 to-blue-600 rounded-2xl flex items-center justify-center text-white shadow-md border border-teal-500">
+                        <i class="fa-solid fa-shield-heart text-2xl"></i>
+                        <i class="fa-solid fa-magnifying-glass text-xs absolute right-1 bottom-1 bg-white text-teal-700 rounded-full p-0.5 shadow-sm"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-2xl font-black tracking-tight text-slate-900">Dawa<span class="text-teal-600">Jaanch</span></span>
+                            <span class="bg-teal-100 text-teal-800 text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider" data-i18n="safety_ai">Safety AI</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 font-medium -mt-1" data-i18n="brand_subtitle">Medicine information and name comparison</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 text-sm font-semibold">
+                    <span class="text-xs text-slate-500">No account needed</span>
+                </div>
+            </div>
+
+            <!-- CATEGORY NAVIGATION BAR -->
+            <nav class="bg-slate-50 border-t border-slate-200 text-xs font-bold text-slate-700">
+                <div class="max-w-7xl mx-auto px-4 flex items-center gap-6 overflow-x-auto no-scrollbar py-2.5">
+                    <button onclick="scrollToSection('hero')" class="whitespace-nowrap text-teal-700 hover:text-teal-800 flex items-center gap-1.5 border-b-2 border-teal-600 pb-0.5">
+                        <i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Home Verification</span>
+                    </button>
+                    <a href="lasa.html" class="whitespace-nowrap hover:text-teal-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-scale-balanced text-amber-600"></i> <span data-i18n="nav_lasa">LASA Comparator</span>
+                    </a>
+                    <button onclick="openModal('modal-ocr')" class="whitespace-nowrap hover:text-teal-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-prescription text-blue-600"></i> <span data-i18n="nav_ocr">Read Prescription (OCR & Camera)</span>
+                    </button>
+                    <a href="generic.html" class="whitespace-nowrap hover:text-teal-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-capsules text-emerald-600"></i> <span data-i18n="nav_generic">Generic Alternatives</span>
+                    </a>
+                    <a href="safety.html" class="whitespace-nowrap hover:text-teal-700 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> <span data-i18n="nav_side">Side Effects & Interactions</span>
+                    </a>
+                    <button onclick="openModal('modal-emergency')" class="whitespace-nowrap text-rose-600 hover:text-rose-700 flex items-center gap-1.5 font-extrabold ml-auto">
+                        <i class="fa-solid fa-phone-flip"></i> <span data-i18n="nav_emergency">Emergency Help</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero-banner-bg py-12 px-4 relative overflow-hidden">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-blue-100/80 border border-blue-200 text-blue-900 px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm">
+                        <i class="fa-solid fa-circle-check text-blue-600"></i>
+                        <span data-i18n="hero_badge">AI-Powered Look-Alike Sound-Alike Protection System</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-tight">
+                        <span data-i18n="hero_title_1">Say GoodBye to</span> <span class="text-blue-600 underline decoration-blue-300 underline-offset-4" data-i18n="hero_title_2">medicine name</span> <span data-i18n="hero_title_3">confusion & errors</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 font-medium max-w-2xl mx-auto lg:mx-0" data-i18n="hero_desc">
+                        Explore general medicine information, compare similar names, and read prescription text. Do not use this tool for dosage or treatment decisions.
+                    </p>
+
+                    <!-- SEARCH CAPSULE -->
+                    <div class="search-pill-container rounded-full p-2 flex flex-col sm:flex-row items-center max-w-3xl mx-auto lg:mx-0 shadow-lg">
+                        <div class="flex items-center flex-1 w-full px-3 py-1 relative">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-lg mr-2"></i>
+                            <input type="text" id="medicine-search-input" data-medicine-suggest aria-autocomplete="list" aria-controls="autocomplete-box" aria-expanded="false"
+                                   placeholder="Search for PREDNISONE, PARACETAMOL, CELEBREX..." 
+                                   class="w-full bg-transparent text-slate-900 font-bold placeholder-slate-400 focus:outline-none py-2 text-base"
+                                   onkeypress="if(event.key === 'Enter') runSearch()">
+                            <button onclick="toggleVoiceInput()" id="mic-btn" aria-label="Voice Search" class="text-slate-400 hover:text-teal-600 p-2 text-lg mr-1" title="Voice Search">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                            <button onclick="runSearch()" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold px-6 py-3 rounded-full flex items-center justify-center gap-2 transition shadow-md text-sm">
+                                <span data-i18n="search_btn">SEARCH</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="voice-status" role="status" aria-live="polite" class="min-h-5 text-xs font-semibold text-slate-500 text-left max-w-3xl mx-auto lg:mx-0"></p>
+
+                    <!-- Autocomplete Dropdown Box -->
+                    <div id="autocomplete-box" data-medicine-suggestions="medicine-search-input" role="status" aria-live="polite" class="hidden bg-white border border-slate-200 rounded-2xl shadow-xl max-w-2xl mx-auto lg:mx-0 overflow-hidden text-left z-20 relative"></div>
+                    <div id="ai-result" role="status" aria-live="polite" class="hidden max-w-3xl mx-auto lg:mx-0 mt-4 bg-white border border-blue-200 rounded-2xl p-5 text-left text-sm leading-7 text-slate-700 whitespace-pre-wrap shadow-lg"></div>
+
+                    <!-- Popular Quick Search Pills -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs font-semibold pt-1">
+                        <span class="text-slate-500" data-i18n="popular_checks">Popular Checks:</span>
+                        <button onclick="quickFillSearch('PREDNISONE')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-3 py-1 rounded-full shadow-sm transition">💊 Prednisone</button>
+                        <button onclick="quickFillSearch('PREDNISOLONE')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-3 py-1 rounded-full shadow-sm transition">💊 Prednisolone</button>
+                        <button onclick="quickFillSearch('CELEBREX')" class="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-3 py-1 rounded-full shadow-sm transition">💊 Celebrex</button>
+                    </div>
+                </div>
+
+                <!-- Hero Graphic -->
+                <div class="lg:col-span-4 flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-80 sm:h-80 bg-white rounded-3xl p-6 shadow-xl border border-blue-100 flex flex-col justify-between items-center text-center">
+                        <div class="w-36 h-36 bg-blue-50 rounded-full flex items-center justify-center border-4 border-blue-200 text-blue-600 text-6xl shadow-inner my-auto">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div class="space-y-1 w-full">
+                            <h3 class="font-extrabold text-slate-900 text-lg" data-i18n="hero_card_title">Medicine information</h3>
+                            <p class="text-xs text-slate-500 font-medium" data-i18n="hero_card_sub">AI-generated information; confirm with a pharmacist.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DUAL ACTION CARDS SECTION -->
+        <section class="py-10 px-4 bg-white">
+            <div class="max-w-5xl mx-auto">
+                <div class="relative flex py-2 items-center mb-8">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-4 text-xs font-black tracking-widest text-slate-400 uppercase" data-i18n="verify_via">TOOLS</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div role="button" tabindex="0" onclick="scrollToSection('hero'); document.getElementById('medicine-search-input').focus()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();scrollToSection('hero');document.getElementById('medicine-search-input').focus()}" class="action-box p-6 rounded-2xl flex items-center gap-4 cursor-pointer">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-blue-800 uppercase tracking-wide">AI-assisted search</p>
+                            <h3 class="font-extrabold text-slate-900 text-lg leading-snug">Ask about a medicine</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5">General information only; confirm with a pharmacist.</p>
+                        </div>
+                    </div>
+
+                    <div role="button" tabindex="0" onclick="openModal('modal-ocr')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('modal-ocr')}" class="action-box p-6 rounded-2xl flex items-center gap-4 cursor-pointer group">
+                        <div class="w-14 h-14 rounded-2xl bg-teal-600 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-teal-800 uppercase tracking-wide" data-i18n="box2_sub">OCR & Live Camera</p>
+                            <h3 class="font-extrabold text-slate-900 text-lg leading-snug" data-i18n="box2_title">Scan Prescription</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5" data-i18n="box2_desc">Use camera or upload document</p>
+                        </div>
+                    </div>
+
+                    <a href="lasa.html" class="action-box p-6 rounded-2xl flex items-center gap-4 cursor-pointer group md:col-span-2 lg:col-span-1">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-amber-800 uppercase tracking-wide" data-i18n="box3_sub">Direct Comparison</p>
+                            <h3 class="font-extrabold text-slate-900 text-lg leading-snug" data-i18n="box3_title">Compare LASA Pair</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5" data-i18n="box3_desc">Complete usage & safety info</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN FEATURE PAGES -->
+        <section class="py-12 px-4 bg-blue-50 border-y border-blue-100">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <div class="text-center"><h2 class="text-2xl sm:text-3xl font-black text-slate-900">Medicine tools</h2><p class="text-slate-600 mt-2">Open a dedicated page for each feature.</p></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <a href="lasa.html" class="action-box p-6 rounded-2xl block"><i class="fa-solid fa-scale-balanced text-amber-600 text-2xl"></i><h3 class="mt-3 font-extrabold text-lg">Name comparison</h3><p class="mt-1 text-sm text-slate-600">Compare two medicine names for possible spelling or sound confusion.</p><span class="inline-block mt-4 text-sm font-bold text-teal-700">Open comparator →</span></a>
+                    <a href="generic.html" class="action-box p-6 rounded-2xl block"><i class="fa-solid fa-capsules text-emerald-600 text-2xl"></i><h3 class="mt-3 font-extrabold text-lg">Generic alternatives</h3><p class="mt-1 text-sm text-slate-600">Ask about ingredients and generic names.</p><span class="inline-block mt-4 text-sm font-bold text-teal-700">Explore alternatives →</span></a>
+                    <a href="safety.html" class="action-box p-6 rounded-2xl block"><i class="fa-solid fa-triangle-exclamation text-rose-600 text-2xl"></i><h3 class="mt-3 font-extrabold text-lg">Side effects & interactions</h3><p class="mt-1 text-sm text-slate-600">Ask about general safety information for one or more medicines.</p><span class="inline-block mt-4 text-sm font-bold text-teal-700">Open safety checker →</span></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- POPULAR LASA CONFUSION PAIRS GRID -->
+        <section class="py-12 px-4 bg-slate-50 border-t border-slate-200">
+            <div class="max-w-6xl mx-auto space-y-8">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="bg-amber-100 text-amber-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase">Examples</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Try a medicine-name comparison</h2>
+                    <p class="text-slate-600 text-sm">Choose an example to send the two names to Gemini for an AI-generated comparison.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="lasa.html?a=PREDNISONE&b=PREDNISOLONE" class="block bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer space-y-3">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="bg-amber-100 text-amber-800 font-bold text-[11px] px-2.5 py-0.5 rounded-full">EXAMPLE PAIR</span>
+                            <i class="fa-solid fa-arrow-right-long text-slate-400"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm font-bold text-slate-800">1. predni<span class="tall-man-letter">SONE</span></div>
+                            <div class="text-sm font-bold text-slate-800">2. predni<span class="tall-man-letter">SOLONE</span></div>
+                        </div>
+                        <p class="text-xs text-slate-500">Select to ask Gemini to compare the names.</p>
+                    </a>
+
+                    <a href="lasa.html?a=CELEBREX&b=CELEXA" class="block bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer space-y-3">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="bg-amber-100 text-amber-800 font-bold text-[11px] px-2.5 py-0.5 rounded-full">EXAMPLE PAIR</span>
+                            <i class="fa-solid fa-arrow-right-long text-slate-400"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm font-bold text-slate-800">1. <span class="tall-man-letter">CELEB</span>rex</div>
+                            <div class="text-sm font-bold text-slate-800">2. <span class="tall-man-letter">CEL</span>exa</div>
+                        </div>
+                        <p class="text-xs text-slate-500">Select to ask Gemini to compare the names.</p>
+                    </a>
+
+                    <a href="lasa.html?a=HYDRALAZINE&b=HYDROXYZINE" class="block bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer space-y-3">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="bg-amber-100 text-amber-800 font-bold text-[11px] px-2.5 py-0.5 rounded-full">EXAMPLE PAIR</span>
+                            <i class="fa-solid fa-arrow-right-long text-slate-400"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm font-bold text-slate-800">1. hydr<span class="tall-man-letter">ALAZINE</span></div>
+                            <div class="text-sm font-bold text-slate-800">2. hydr<span class="tall-man-letter">OXYZINE</span></div>
+                        </div>
+                        <p class="text-xs text-slate-500">Select to ask Gemini to compare the names.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 py-10 px-4 text-xs border-t border-slate-800">
+        <div class="max-w-6xl mx-auto space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-6">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-heart text-teal-500 text-2xl"></i>
+                    <span class="text-white text-xl font-black">DawaJaanch</span>
+                </div>
+                <p class="text-slate-500 text-center md:text-right" data-i18n="disclaimer">
+                    Disclaimer: DawaJaanch is an educational safety tool and does not replace professional medical advice.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2 text-slate-500">
+                <p>© 2026 DawaJaanch Medical Safety Systems. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- MODAL: OCR / CAMERA -->
+    <div id="modal-ocr" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 space-y-6">
+            <div class="flex justify-between items-center border-b pb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-slate-900" data-i18n="ocr_title">Prescription Scanner & Camera</h3>
+                        <p class="text-xs text-slate-500" data-i18n="ocr_sub">Capture with your device camera or upload prescription file</p>
+                    </div>
+                </div>
+                <button onclick="stopCamera(); closeModal('modal-ocr')" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex rounded-xl bg-slate-100 p-1 font-bold text-xs text-slate-700">
+                <button onclick="switchOcrTab('camera')" id="tab-cam-btn" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-teal-700 transition"><i class="fa-solid fa-camera mr-1"></i> <span data-i18n="cam_tab">Live Camera</span></button>
+                <button onclick="switchOcrTab('upload')" id="tab-upload-btn" class="flex-1 py-2 rounded-lg transition"><i class="fa-solid fa-upload mr-1"></i> <span data-i18n="upload_tab">Upload Image / PDF</span></button>
+            </div>
+
+            <div id="ocr-camera-view" class="space-y-4">
+                <div class="relative bg-slate-900 rounded-2xl overflow-hidden aspect-video flex items-center justify-center text-white">
+                    <video id="camera-feed" autoplay playsinline class="w-full h-full object-cover"></video>
+                    <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/80 text-center p-4">
+                        <i class="fa-solid fa-video-slash text-4xl text-slate-400 mb-2"></i>
+                        <p class="text-sm font-bold" data-i18n="cam_paused">Camera stream is paused or unavailable</p>
+                        <button onclick="startCamera()" class="mt-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs" data-i18n="start_cam">Start Camera</button>
+                    </div>
+                </div>
+                <div class="flex justify-center gap-3">
+                    <button onclick="capturePhoto()" class="bg-teal-600 hover:bg-teal-700 text-white font-extrabold px-6 py-3 rounded-xl text-sm flex items-center gap-2 shadow-md">
+                        <i class="fa-solid fa-camera-retro"></i> <span data-i18n="capture_btn">Capture & Scan Prescription</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="ocr-upload-view" class="hidden space-y-4">
+                <label class="border-2 border-dashed border-slate-300 hover:border-teal-500 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer bg-slate-50 transition">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-teal-600 mb-2"></i>
+                    <span class="font-bold text-slate-800" data-i18n="upload_text">Click to upload prescription image</span>
+                    <span class="text-xs text-slate-500 mt-1">JPG, PNG, or WebP image (maximum 3 MB)</span>
+                    <input type="file" class="hidden" accept="image/jpeg,image/png,image/webp" onchange="scanImage(this.files[0])">
+                </label>
+            </div>
+
+            <div id="ocr-results" role="status" aria-live="polite" class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm whitespace-pre-wrap"></div>
+        </div>
+    </div>
+
+    <!-- MODAL: EMERGENCY -->
+    <div id="modal-emergency" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-rose-200 p-6 space-y-4 text-center">
+            <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-phone-flip"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-900" data-i18n="em_title">Emergency Medical Helpline</h3>
+            <p class="text-xs text-slate-600" data-i18n="em_desc">If you or someone else has taken the wrong medication or experiencing adverse side effects, call emergency services immediately.</p>
+            <div class="space-y-2 pt-2">
+                <a href="tel:112" class="block w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 rounded-xl text-base shadow-md">
+                    <i class="fa-solid fa-phone mr-2"></i> <span data-i18n="em_call1">Call National Emergency (112)</span>
+                </a>
+                <p class="text-xs text-slate-600">Contact your local emergency service or poison control center for urgent help.</p>
+            </div>
+            <button onclick="closeModal('modal-emergency')" class="text-xs text-slate-500 font-semibold underline pt-2" data-i18n="close">Close</button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script src="medicine-suggestions.js"></script>
+    <script src="medicine-app.js"></script>
+    <script>
+        let currentLang = 'en';
+        const translations = {
+            en: {
+                top_portal: "AI-assisted medicine information",
+                top_helpline: "National Helpline:",
+                senior_mode: "Senior Mode",
+                safety_ai: "Safety AI",
+                brand_subtitle: "Medicine information and name comparison",
+                support_line: "Support Line",
+                login_btn: "Login / Register",
+                nav_home: "Home Verification",
+                nav_lasa: "LASA Comparator",
+                nav_ocr: "Read Prescription (OCR & Camera)",
+                nav_generic: "Generic Alternatives",
+                nav_side: "Side Effects & Interactions",
+                nav_emergency: "Emergency Help",
+                hero_badge: "AI-Powered Look-Alike Sound-Alike Protection System",
+                hero_title_1: "Say GoodBye to",
+                hero_title_2: "medicine name",
+                hero_title_3: "confusion & errors",
+                hero_desc: "Explore general medicine information, compare similar names, and read prescription text. Do not use this tool for dosage or treatment decisions.",
+                search_btn: "SEARCH",
+                popular_checks: "Popular Checks:",
+                hero_card_title: "Medicine information",
+                hero_card_sub: "AI-generated information; confirm with a pharmacist.",
+                verify_via: "TOOLS",
+                box2_sub: "OCR & Live Camera",
+                box2_title: "Scan Prescription",
+                box2_desc: "Use camera or upload document",
+                box3_sub: "Direct Comparison",
+                box3_title: "Compare LASA Pair",
+                box3_desc: "Complete usage & safety info",
+                alert_badge: "High Error Risk Alert",
+                pairs_title: "Try a medicine-name comparison",
+                pairs_desc: "Choose an example to ask Gemini for an AI-generated name comparison.",
+                high_risk: "HIGH RISK (88%)",
+                mod_risk: "MODERATE RISK (75%)",
+                pair1_desc: "Oral Corticosteroid anti-inflammatory vs Immunosuppressant.",
+                pair2_desc: "NSAID arthritis pain relief vs Antidepressant (SSRI).",
+                pair3_desc: "Blood pressure vasodilator vs Antihistamine/Anxiolytic.",
+                disclaimer: "Disclaimer: DawaJaanch is an educational safety tool and does not replace professional medical advice.",
+                lasa_sub: "Side-by-side analysis, indications, and Tall Man Lettering safety checks",
+                rec_title: "Pharmacist Safety Recommendation:",
+                rec_desc: "Always verify the exact strength and indication with the prescribing physician if handwriting is ambiguous.",
+                ocr_title: "Prescription Scanner & Camera",
+                ocr_sub: "Capture with your device camera or upload prescription file",
+                cam_tab: "Live Camera",
+                upload_tab: "Upload Image / PDF",
+                cam_paused: "Camera stream is paused or unavailable",
+                start_cam: "Start Camera",
+                capture_btn: "Capture & Scan Prescription",
+                upload_text: "Click to upload prescription image",
+                ocr_success: "Prescription Successfully Scanned!",
+                dose_1: "1 tab daily after meal",
+                dose_2: "As needed for fever",
+                login_title: "Login to DawaJaanch",
+                mobile_label: "Mobile Number or Email",
+                otp_btn: "Get Verification OTP",
+                senior_title: "Senior Accessibility Mode",
+                senior_desc: "Use your browser zoom to enlarge the text. This site is not a medical service.",
+                got_it: "Got It, Thanks",
+                em_title: "Emergency Medical Helpline",
+                em_desc: "If you or someone else has taken the wrong medication or experiencing adverse side effects, call emergency services immediately.",
+                em_call1: "Call National Emergency (112)",
+                em_call2: "Contact local emergency services",
+                close: "Close"
+            },
+            hi: {
+                top_portal: "AI-सहायता प्राप्त दवा जानकारी",
+                top_helpline: "राष्ट्रीय हेल्पलाइन:",
+                senior_mode: "सीनियर मोड",
+                safety_ai: "सुरक्षा एआई",
+                brand_subtitle: "दवा की जानकारी और नामों की तुलना",
+                support_line: "सहायता लाइन",
+                login_btn: "लॉगिन / रजिस्टर",
+                nav_home: "होम सत्यापन",
+                nav_lasa: "LASA तुलना",
+                nav_ocr: "पर्चा पढ़ें (कैमरा और ओसीआर)",
+                nav_generic: "जेनेरिक विकल्प",
+                nav_side: "दुष्प्रभाव और प्रतिक्रियाएं",
+                nav_emergency: "आपातकालीन सहायता",
+                hero_badge: "एआई-संचालित लुक-अलाइक साउंड-अलाइक सुरक्षा प्रणाली",
+                hero_title_1: "अलविदा कहें",
+                hero_title_2: "दवा के नाम",
+                hero_title_3: "भ्रम और त्रुटियों को",
+                hero_desc: "दवाओं की सामान्य जानकारी देखें, मिलते-जुलते नामों की तुलना करें और पर्चे का पाठ पढ़ें। खुराक या इलाज के निर्णय के लिए इसका उपयोग न करें।",
+                search_btn: "खोजें",
+                popular_checks: "लोकप्रिय जाँच:",
+                hero_card_title: "दवा की जानकारी",
+                hero_card_sub: "AI द्वारा बनाई गई जानकारी; फार्मासिस्ट से पुष्टि करें।",
+                verify_via: "उपकरण",
+                box1_sub: "तत्काल फार्मासिस्ट सहायता",
+                box1_desc: "टोल-फ्री सीनियर हेल्पलाइन 24/7 उपलब्ध",
+                box2_sub: "ओसीआर और लाइव कैमरा",
+                box2_title: "पर्चा स्कैन करें",
+                box2_desc: "कैमरा उपयोग करें या दस्तावेज़ अपलोड करें",
+                box3_sub: "प्रत्यक्ष तुलना",
+                box3_title: "LASA जोड़ी तुलना करें",
+                box3_desc: "पूर्ण उपयोग और सुरक्षा जानकारी",
+                alert_badge: "उच्च त्रुटि जोखिम चेतावनी",
+                pairs_title: "दवा के नामों की तुलना करें",
+                pairs_desc: "उदाहरण चुनकर Gemini से AI द्वारा नामों की तुलना पूछें।",
+                high_risk: "उच्च जोखिम (88%)",
+                mod_risk: "मध्यम जोखिम (75%)",
+                pair1_desc: "ओरल कॉर्टिकोस्टेरॉइड एंटी-इन्फ्लammatory बनाम इम्युनोसप्रेसेंट।",
+                pair2_desc: "NSAID गठिया दर्द राहत बनाम एंटीडिप्रेसेंट (SSRI)।",
+                pair3_desc: "ब्लड प्रेशर वासोडिलेटर बनाम एंटीहिस्टामाइन/एंजाइटी रोधी।",
+                disclaimer: "अस्वीकरण: दवाजांच एक शैक्षिक सुरक्षा उपकरण है और पेशेवर चिकित्सा सलाह का विकल्प नहीं है।",
+                lasa_sub: "आमने-सामने विश्लेषण, संकेत और टॉल मैन लेटरिंग सुरक्षा जांच",
+                rec_title: "फार्मासिस्ट सुरक्षा सिफारिश:",
+                rec_desc: "यदि लिखावट स्पष्ट न हो तो हमेशा चिकित्सक से सटीक शक्ति और संकेत की पुष्टि करें।",
+                ocr_title: "प्रिस्क्रिप्शन स्कैनर और कैमरा",
+                ocr_sub: "अपने डिवाइस कैमरे से कैप्चर करें या प्रिस्क्रिप्शन फ़ाइल अपलोड करें",
+                cam_tab: "लाइव कैमरा",
+                upload_tab: "छवि / पीडीएफ अपलोड करें",
+                cam_paused: "कैमरा स्ट्रीम रुकी हुई है या अनुपलब्ध है",
+                start_cam: "कैमरा शुरू करें",
+                capture_btn: "प्रिस्क्रिप्शन कैप्चर और स्कैन करें",
+                upload_text: "प्रिस्क्रिप्शन छवि अपलोड करने के लिए क्लिक करें",
+                ocr_success: "प्रिस्क्रिप्शन सफलतापूर्वक स्कैन हो गया!",
+                dose_1: "भोजन के बाद प्रतिदिन 1 गोली",
+                dose_2: "बुखार के लिए आवश्यकतानुसार",
+                login_title: "दवाजांच में लॉगिन करें",
+                mobile_label: "मोबाइल नंबर या ईमेल",
+                otp_btn: "सत्यापन ओटीपी प्राप्त करें",
+                senior_title: "सीनियर सुलभता मोड",
+                senior_desc: "अक्षर बड़े करने के लिए ब्राउज़र ज़ूम का उपयोग करें। यह साइट चिकित्सा सेवा नहीं है।",
+                got_it: "समझ गए, धन्यवाद",
+                em_title: "आपातकालीन चिकित्सा हेल्पलाइन",
+                em_desc: "यदि आपने या किसी और ने गलत दवा ले ली है या गंभीर दुष्प्रभाव महसूस हो रहे हैं, तो तुरंत आपातकालीन सेवाओं को कॉल करें।",
+                em_call1: "राष्ट्रीय आपातकाल को कॉल करें (112)",
+                em_call2: "स्थानीय आपातकालीन सेवाओं से संपर्क करें",
+                close: "बंद करें"
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            document.documentElement.lang = currentLang;
+            document.getElementById('lang-btn-text').innerText = currentLang === 'en' ? 'हिंदी (Hindi)' : 'English';
+            
+            // Update static elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+            if (modalId === 'modal-ocr') startCamera();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('flex');
+            document.getElementById(modalId).classList.add('hidden');
+            if(modalId === 'modal-ocr') stopCamera();
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function quickFillSearch(medName) {
+            document.getElementById('medicine-search-input').value = medName;
+            runSearch();
+        }
+
+        function toggleSeniorMode() {
+            const enabled = document.documentElement.style.fontSize !== '120%';
+            document.documentElement.style.fontSize = enabled ? '120%' : '';
+            document.getElementById('senior-mode-button').setAttribute('aria-pressed', String(enabled));
+        }
+
+        function runSearch() {
+            const query = document.getElementById('medicine-search-input').value.trim();
+            document.getElementById('autocomplete-box').classList.add('hidden');
+            if (!query) { document.getElementById('medicine-search-input').focus(); return; }
+            requestGemini('search', query);
+        }
+
+        function switchOcrTab(mode) {
+            const camView = document.getElementById('ocr-camera-view');
+            const uploadView = document.getElementById('ocr-upload-view');
+            const camBtn = document.getElementById('tab-cam-btn');
+            const uploadBtn = document.getElementById('tab-upload-btn');
+
+            if(mode === 'camera') {
+                camView.classList.remove('hidden');
+                uploadView.classList.add('hidden');
+                camBtn.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-teal-700 transition font-bold';
+                uploadBtn.className = 'flex-1 py-2 rounded-lg transition font-bold text-slate-700';
+                startCamera();
+            } else {
+                camView.classList.add('hidden');
+                uploadView.classList.remove('hidden');
+                uploadBtn.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-teal-700 transition font-bold';
+                camBtn.className = 'flex-1 py-2 rounded-lg transition font-bold text-slate-700';
+                stopCamera();
+            }
+        }
+
+        let videoStream = null;
+        async function startCamera() {
+            const video = document.getElementById('camera-feed');
+            const placeholder = document.getElementById('camera-placeholder');
+            const message = placeholder.querySelector('p');
+            if (videoStream) return;
+            if (!navigator.mediaDevices?.getUserMedia) {
+                message.textContent = 'Camera needs localhost or HTTPS. Open the project with Vercel dev, or upload an image.';
+                placeholder.style.display = 'flex';
+                return;
+            }
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
+                video.srcObject = videoStream;
+                await video.play();
+                placeholder.style.display = 'none';
+            } catch (err) {
+                stopCamera();
+                message.textContent = err.name === 'NotAllowedError'
+                    ? 'Camera permission was denied. Allow camera access in your browser, then try again.'
+                    : 'Camera is unavailable. Try another camera or upload an image instead.';
+            }
+        }
+
+        function stopCamera() {
+            if(videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            const video = document.getElementById('camera-feed');
+            if (video) video.srcObject = null;
+            const placeholder = document.getElementById('camera-placeholder');
+            if(placeholder) placeholder.style.display = 'flex';
+        }
+
+        async function capturePhoto() {
+            const video = document.getElementById('camera-feed');
+            if (!video.videoWidth) return alert('Start the camera first.');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+            stopCamera();
+            await scanImage(blob);
+        }
+
+        async function scanImage(file) {
+            const output = document.getElementById('ocr-results');
+            if (!file || file.size > 3 * 1024 * 1024 || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                output.classList.remove('hidden'); output.textContent = 'Choose a JPG, PNG, or WebP image up to 3 MB.'; return;
+            }
+            output.classList.remove('hidden'); output.textContent = 'Reading image with Gemini…';
+            try {
+                const image = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = () => reject(new Error('Could not read this image. Try another file.')); reader.readAsDataURL(file); });
+                await requestGemini('scan', '', 'ocr-results', { image, mimeType: file.type });
+            } catch (error) {
+                output.textContent = error.message;
+            }
+        }
+
+        if (location.hash === '#scan-prescription') openModal('modal-ocr');
+        if (location.hash === '#emergency-help') openModal('modal-emergency');
+
+        let voiceRecorder = null;
+        let voiceStream = null;
+        let voiceChunks = [];
+        async function toggleVoiceInput() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const status = document.getElementById('voice-status');
+            if (SpeechRecognition) {
+                const recognition = new SpeechRecognition();
+                recognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+                recognition.onstart = () => status.textContent = 'Listening… say a medicine name or question.';
+                recognition.onresult = event => { document.getElementById('medicine-search-input').value = event.results[0][0].transcript; status.textContent = `Heard: ${event.results[0][0].transcript}`; runSearch(); };
+                recognition.onerror = event => status.textContent = `Voice search error: ${event.error}. Allow microphone access and try again.`;
+                try { recognition.start(); } catch { status.textContent = 'Could not start the microphone. Allow microphone access and try again.'; }
+                return;
+            }
+            if (voiceRecorder?.state === 'recording') {
+                voiceRecorder.stop();
+                status.textContent = 'Processing your voice query…';
+                return;
+            }
+            if (!window.MediaRecorder || !navigator.mediaDevices?.getUserMedia) {
+                status.textContent = 'Voice search needs microphone access in a modern browser over HTTPS. You can type the medicine name instead.';
+                return;
+            }
+            try {
+                voiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                voiceChunks = [];
+                const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? { mimeType: 'audio/webm;codecs=opus' } : {};
+                voiceRecorder = new MediaRecorder(voiceStream, options);
+                voiceRecorder.ondataavailable = event => { if (event.data.size) voiceChunks.push(event.data); };
+                voiceRecorder.onstop = async () => {
+                    voiceStream.getTracks().forEach(track => track.stop());
+                    const blob = new Blob(voiceChunks, { type: voiceRecorder.mimeType || 'audio/webm' });
+                    if (blob.size > 2 * 1024 * 1024) { status.textContent = 'Recording was too long. Try a shorter voice query.'; return; }
+                    try {
+                        const encoded = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(',')[1]); reader.onerror = reject; reader.readAsDataURL(blob); });
+                        await requestGemini('voice', '', 'ai-result', { audio: encoded, mimeType: blob.type });
+                    } catch { status.textContent = 'Could not read the recording. Please try again.'; }
+                };
+                voiceRecorder.start();
+                status.textContent = 'Recording… tap the microphone again when you finish.';
+            } catch {
+                status.textContent = 'Microphone access was denied or unavailable. Allow access and try again.';
+            }
+        }
+    </script>
+</body>
+</html>

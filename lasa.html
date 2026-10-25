@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medicine Name Comparison | DawaJaanch</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 via-slate-50 to-white text-slate-900">
+  <div class="bg-slate-950 text-slate-100 text-xs"><div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-2"><i class="fa-solid fa-shield-heart text-teal-400"></i> AI-assisted medicine information <span class="ml-auto text-slate-400">No account needed</span></div></div>
+  <header class="bg-white/95 sticky top-0 z-40 border-b border-slate-200 shadow-sm"><div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between gap-4 items-center"><a href="index.html" class="flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-600 to-blue-600 text-white shadow flex items-center justify-center text-xl"><i class="fa-solid fa-shield-heart"></i></span><span class="text-2xl font-black tracking-tight">Dawa<span class="text-teal-600">Jaanch</span><small class="block text-[11px] leading-none font-medium text-slate-500">Medicine information and name comparison</small></span></a><nav aria-label="Main navigation" class="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm font-bold"><a class="text-slate-600 hover:text-teal-700" href="index.html">Home verification</a><a class="text-amber-700" href="lasa.html">Name comparison</a><a class="text-slate-600 hover:text-teal-700" href="index.html#scan-prescription">Read prescription</a><a class="text-slate-600 hover:text-teal-700" href="generic.html">Generic alternatives</a><a class="text-slate-600 hover:text-teal-700" href="safety.html">Side effects & interactions</a><a class="text-rose-600" href="index.html#emergency-help">Emergency help</a></nav></div></header>
+  <main class="max-w-6xl mx-auto px-4 py-10 sm:py-14">
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 via-amber-600 to-orange-700 p-7 sm:p-10 text-white shadow-xl"><div class="absolute -right-8 -top-12 text-white/10 text-9xl"><i class="fa-solid fa-scale-balanced"></i></div><div class="relative max-w-3xl"><span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider"><i class="fa-solid fa-shield-halved"></i> Medicine name safety</span><h1 class="mt-4 text-3xl sm:text-4xl font-black">Compare two medicine names</h1><p class="mt-3 text-amber-50">Check whether names may be confused because they look or sound alike. Suggestions below the fields can help with spelling.</p></div></section>
+    <section class="mt-6 bg-white rounded-3xl border border-slate-200 shadow-lg p-6 sm:p-10 space-y-6">
+      <div><h2 class="text-xl font-extrabold">Enter the pair to compare</h2><p class="mt-1 text-sm text-slate-500">Select a suggested match when it appears.</p></div>
+      <form onsubmit="compareMedicines(event)" class="space-y-4">
+        <label class="block font-bold">First medicine<div class="mt-1"><input id="medicine-a" data-medicine-suggest aria-autocomplete="list" aria-expanded="false" class="w-full rounded-xl border border-slate-300 px-4 py-3 font-normal" placeholder="Start typing a medicine name"><div data-medicine-suggestions="medicine-a" role="status" aria-live="polite" class="hidden rounded-b-xl border border-t-0 bg-white"></div></div></label>
+        <label class="block font-bold">Second medicine<div class="mt-1"><input id="medicine-b" data-medicine-suggest aria-autocomplete="list" aria-expanded="false" class="w-full rounded-xl border border-slate-300 px-4 py-3 font-normal" placeholder="Type the other medicine name"><div data-medicine-suggestions="medicine-b" role="status" aria-live="polite" class="hidden rounded-b-xl border border-t-0 bg-white"></div></div></label>
+        <button class="w-full sm:w-auto rounded-xl bg-amber-500 hover:bg-amber-600 px-6 py-3 font-extrabold">Compare names</button>
+      </form>
+      <div id="result" class="hidden whitespace-pre-wrap leading-7 rounded-2xl bg-slate-50 border p-5" role="status" aria-live="polite"></div>
+      <p class="text-xs text-slate-500 border-t pt-4">AI-generated information can be wrong. Confirm the exact medicine, strength, and label with a pharmacist or prescriber. Do not use this result to decide what to take.</p>
+    </section>
+  </main>
+  <script src="medicine-suggestions.js"></script><script src="medicine-app.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    document.getElementById('medicine-a').value = params.get('a') || '';
+    document.getElementById('medicine-b').value = params.get('b') || '';
+    async function compareMedicines(event) {
+      event.preventDefault();
+      const a = document.getElementById('medicine-a').value.trim(), b = document.getElementById('medicine-b').value.trim();
+      if (!a || !b) return alert('Enter both medicine names to compare.');
+      await requestGemini('compare', `${a} vs ${b}`, 'result');
+    }
+  </script>
+</body>
+</html>
